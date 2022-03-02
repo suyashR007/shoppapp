@@ -47,9 +47,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void didChangeDependencies() {
     if (_isInit) {
       final productId = ModalRoute.of(context)!.settings.arguments as String;
-        _editedProduct =
-            Provider.of<Products>(context, listen: false).findById(productId);
+        _editedProduct = Provider.of<Products>(context, listen: false).findById(productId);
         _initValues = {
+          'id': _editedProduct.id,
           'title': _editedProduct.title,
           'description': _editedProduct.description,
           'price': _editedProduct.price.toString(),
@@ -81,13 +81,13 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
-    final isValidator = _form.currentState?.validate();
-    if (!isValidator!) {
+    final isValidator = _form.currentState!.validate();
+    if (isValidator) {
       return;
     }
     _form.currentState?.save();
-    if(_editedProduct.id != null) {
-      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id,_editedProduct);
+    if(_editedProduct.id.isEmpty) {
+      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id.toString(),_editedProduct);
     }else {
       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     }

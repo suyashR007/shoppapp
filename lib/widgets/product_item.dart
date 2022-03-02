@@ -34,7 +34,7 @@ class ProductItem extends StatelessWidget {
           icon: const Icon(Icons.shopping_cart),
           onPressed: () {
             cart.addItem(
-              product.id,
+              product.id.toString(),
               product.price,
               product.title,
             );
@@ -45,7 +45,7 @@ class ProductItem extends StatelessWidget {
               action: SnackBarAction(
                 label: 'UNDO',
                 onPressed: () {
-                  cart.removeItem((product.id));
+                  cart.removeItem((product.id.toString()));
                 },
               ),
             ));
