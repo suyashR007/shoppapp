@@ -4,6 +4,7 @@ import 'package:shoppapp/providers/products_provider.dart';
 
 class ReEditProduct extends StatefulWidget {
   static const routeName = '/reedit-product-screen';
+
   const ReEditProduct({Key? key}) : super(key: key);
 
   @override
@@ -12,6 +13,9 @@ class ReEditProduct extends StatefulWidget {
 
 class _ReEditProductState extends State<ReEditProduct> {
   final _form = GlobalKey<FormState>();
+  final _imageUrlController = TextEditingController();
+  final _imageUrlFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +54,46 @@ class _ReEditProductState extends State<ReEditProduct> {
               ),
               const SizedBox(
                 height: 10,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    margin: const EdgeInsets.only(right: 10, top: 8),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                      color: Colors.deepPurple,
+                    )),
+                    child: Container(
+                      child: _imageUrlController.text.isEmpty
+                          ? const Text(
+                              'ENTER A URL',
+                              textAlign: TextAlign.center,
+                            )
+                          : FittedBox(
+                              child: Image.network(_imageUrlController.text),
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                  ),
+                  Expanded(
+                    child: TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'IMAGE URL',
+                        border: OutlineInputBorder(),
+                      ),
+                      controller: _imageUrlController,
+                      keyboardType: TextInputType.url,
+                      textInputAction: TextInputAction.done,
+                      focusNode: _imageUrlFocusNode,
+                      onEditingComplete: () {
+                        setState(() {});
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
