@@ -28,10 +28,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
   );
   var _isInit = true;
   var _initValues = {
-    'title' : '',
-    'description' : '',
+    'title': '',
+    'description': '',
     'price': '',
-    'imageUrl' : '',
+    'imageUrl': '',
   };
 
   @override
@@ -47,16 +47,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
   void didChangeDependencies() {
     if (_isInit) {
       final productId = ModalRoute.of(context)!.settings.arguments as String;
-        _editedProduct = Provider.of<Products>(context, listen: false).findById(productId);
-        _initValues = {
-          'id': _editedProduct.id,
-          'title': _editedProduct.title,
-          'description': _editedProduct.description,
-          'price': _editedProduct.price.toString(),
-          // 'imageUrl': _editedProduct.imageUrl,
-          'imageUrl': '',
-        };
-        _imageUrlController.text = _editedProduct.imageUrl;
+      _editedProduct =
+          Provider.of<Products>(context, listen: false).findById(productId);
+      _initValues = {
+        'id': _editedProduct.id,
+        'title': _editedProduct.title,
+        'description': _editedProduct.description,
+        'price': _editedProduct.price.toString(),
+        // 'imageUrl': _editedProduct.imageUrl,
+        'imageUrl': '',
+      };
+      _imageUrlController.text = _editedProduct.imageUrl;
     }
     _isInit = false;
     super.didChangeDependencies();
@@ -86,9 +87,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _form.currentState?.save();
-    if(_editedProduct.id.isEmpty) {
-      Provider.of<Products>(context, listen: false).updateProduct(_editedProduct.id.toString(),_editedProduct);
-    }else {
+    if (_editedProduct.id.isEmpty) {
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_editedProduct.id.toString(), _editedProduct);
+    } else {
       Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     }
     Navigator.pop(context);
@@ -239,7 +241,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     ),
                     Expanded(
                       child: TextFormField(
-                       // initialValue: _initValues['imageUrl'],
+                        // initialValue: _initValues['imageUrl'],
                         decoration: const InputDecoration(
                           labelText: 'IMAGE URL',
                           border: OutlineInputBorder(),
@@ -287,14 +289,3 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 }
-/* Expanded(
-  child: TextFormField(
-    decoration: InputDecoration(labelText: 'Image URL'),
-    keyboardType: TextInputType.url,
-    textInputAction: TextInputAction.done,
-    controller: _imageUrlController,
-    onEditingComplete: () {
-      setState(() {});
-    },
-  )
-),*/

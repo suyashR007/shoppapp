@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shoppapp/screens/edit_product_screen.dart';
 import 'package:shoppapp/screens/reedit_product.dart';
 
 class UserProductItem extends StatelessWidget {
@@ -22,7 +21,7 @@ class UserProductItem extends StatelessWidget {
         leading: CircleAvatar(
           backgroundImage: NetworkImage(imageUrl),
         ),
-        trailing: Container(
+        trailing: SizedBox(
           width: 100,
           child: Row(
             children: [
