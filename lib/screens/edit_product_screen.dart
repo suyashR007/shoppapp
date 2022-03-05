@@ -88,11 +88,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
     //   return;
     // }
     _form.currentState?.save();
-    if (_editedProduct.id.isEmpty) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_editedProduct.id.toString(), _editedProduct);
-    } //else {
-    // Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    //if (_editedProduct.id.isEmpty) {
+    // Provider.of<Products>(context, listen: false)
+    //     .updateProduct(_editedProduct.id.toString(), _editedProduct);
+    //} //else {
+    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
     // }
     Navigator.pop(context);
   }

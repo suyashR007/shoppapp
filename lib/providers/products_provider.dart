@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shoppapp/providers/product.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Products with ChangeNotifier {
   final List<Product> _items = [
@@ -53,6 +55,16 @@ class Products with ChangeNotifier {
   }
 
   void addProduct(Product product) {
+    final url = Uri.parse(
+        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json');
+    http.post(url,
+        body: json.encode({
+          'title': product.title,
+          'description': product.description,
+          'imageUrl': product.imageUrl,
+          'price': product.price,
+          'isfavorite': product.isFavorite,
+        }));
     // ignore: unused_local_variable
     final newProduct = Product(
       id: DateTime.now().toString(),
@@ -71,7 +83,7 @@ class Products with ChangeNotifier {
       _items[prodIndex] = newProduct;
       notifyListeners();
     } else {
-      print('...');
+      //print('...');
     }
   }
 
