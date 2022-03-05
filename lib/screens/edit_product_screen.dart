@@ -26,42 +26,43 @@ class _EditProductScreenState extends State<EditProductScreen> {
     price: 0,
     imageUrl: '',
   );
-  var _isInit = true;
-  var _initValues = {
-    'title': '',
-    'description': '',
-    'price': '',
-    'imageUrl': '',
-  };
+  // var _isInit = true;
+  // var _initValues = {
+  //   'title': '',
+  //   'description': '',
+  //   'price': '',
+  //   'imageUrl': '',
+  // };
 
   @override
   void initState() {
     _imageUrlDocusNode.addListener(() {
       _updateImageUrl;
     });
+    // ignore: todo
     // TODO: implement initState
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    if (_isInit) {
-      final productId = ModalRoute.of(context)!.settings.arguments as String;
-      _editedProduct =
-          Provider.of<Products>(context, listen: false).findById(productId);
-      _initValues = {
-        'id': _editedProduct.id,
-        'title': _editedProduct.title,
-        'description': _editedProduct.description,
-        'price': _editedProduct.price.toString(),
-        // 'imageUrl': _editedProduct.imageUrl,
-        'imageUrl': '',
-      };
-      _imageUrlController.text = _editedProduct.imageUrl;
-    }
-    _isInit = false;
-    super.didChangeDependencies();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   if (_isInit) {
+  //     final productId = ModalRoute.of(context)!.settings.arguments as String;
+  //     _editedProduct =
+  //         Provider.of<Products>(context, listen: false).findById(productId);
+  //     _initValues = {
+  //       'id': _editedProduct.id,
+  //       'title': _editedProduct.title,
+  //       'description': _editedProduct.description,
+  //       'price': _editedProduct.price.toString(),
+  //       // 'imageUrl': _editedProduct.imageUrl,
+  //       'imageUrl': '',
+  //     };
+  //     _imageUrlController.text = _editedProduct.imageUrl;
+  //   }
+  //   _isInit = false;
+  //   super.didChangeDependencies();
+  // }
 
   @override
   void dispose() {
@@ -82,17 +83,17 @@ class _EditProductScreenState extends State<EditProductScreen> {
   }
 
   void _saveForm() {
-    final isValidator = _form.currentState!.validate();
-    if (isValidator) {
-      return;
-    }
+    // final isValidator = _form.currentState!.validate();
+    // if (isValidator) {
+    //   return;
+    // }
     _form.currentState?.save();
     if (_editedProduct.id.isEmpty) {
       Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id.toString(), _editedProduct);
-    } else {
-      Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
-    }
+    } //else {
+    // Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    // }
     Navigator.pop(context);
   }
 
@@ -100,7 +101,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Product'),
+        title: const Text('New Product'),
         actions: [
           IconButton(
             onPressed: () {
@@ -117,7 +118,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
             child: ListView(
               children: [
                 TextFormField(
-                  initialValue: _initValues['title'],
+                  //initialValue: _initValues['title'],
                   //initialValue: _initValues['title'],
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Title'),
@@ -145,7 +146,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   height: 10,
                 ),
                 TextFormField(
-                  initialValue: _initValues['price'],
+                  //initialValue: _initValues['price'],
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Price'),
                   textInputAction: TextInputAction.next,
@@ -181,7 +182,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                   height: 10,
                 ),
                 TextFormField(
-                  initialValue: _initValues['description'],
+                  //initialValue: _initValues['description'],
                   decoration: const InputDecoration(
                       border: OutlineInputBorder(), labelText: 'Description'),
                   maxLines: 3,

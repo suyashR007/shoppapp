@@ -33,6 +33,21 @@ class _ReEditProductState extends State<ReEditProduct> {
     'price': '',
     'imageUrl': '',
   };
+  @override
+  void didChangeDependencies() {
+    final productId = ModalRoute.of(context)!.settings.arguments as String;
+    _editedProduct =
+        Provider.of<Products>(context, listen: false).findById(productId);
+    _initValues = {
+      'id': _editedProduct.id,
+      'title': _editedProduct.title,
+      'description': _editedProduct.description,
+      'price': _editedProduct.price.toString(),
+      'imageUrl': '',
+    };
+    _imageUrlController.text = _editedProduct.imageUrl;
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
@@ -50,15 +65,23 @@ class _ReEditProductState extends State<ReEditProduct> {
 
   @override
   void dispose() {
+    _imageUrlFocusNode.removeListener(() {
+      _updateImageUrl();
+    });
+    _imageUrlFocusNode.dispose();
+    _imageUrlController.dispose();
     _priceFocusNode.dispose();
     _descriptionFocusNode.dispose();
     super.dispose();
   }
 
   void _saveForm() {
-    final isValidator = _form.currentState!.validate();
+    // final isValidator = _form.currentState!.validate();
+    // if (isValidator) {
+    //   return;
+    // }
     _form.currentState!.save();
-    Provider.of<Products>(context)
+    Provider.of<Products>(context, listen: false)
         .updateProduct(_editedProduct.id.toString(), _editedProduct);
     Navigator.pop(context);
   }
@@ -67,7 +90,15 @@ class _ReEditProductState extends State<ReEditProduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('somedata'),
+        title: const Text('Edit Product'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _saveForm();
+            },
+            icon: const Icon(Icons.save),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(3),

@@ -28,7 +28,7 @@ class CartScreen extends StatelessWidget {
                     'total',
                     style: TextStyle(fontSize: 20),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   const SizedBox(
                     width: 10,
                   ),
