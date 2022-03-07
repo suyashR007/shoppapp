@@ -75,13 +75,13 @@ class _ReEditProductState extends State<ReEditProduct> {
     super.dispose();
   }
 
-  void _saveForm() {
+  void _saveForm() async {
     // final isValidator = _form.currentState!.validate();
     // if (isValidator) {
     //   return;
     // }
     _form.currentState!.save();
-    Provider.of<Products>(context, listen: false)
+    await Provider.of<Products>(context, listen: false)
         .updateProduct(_editedProduct.id.toString(), _editedProduct);
     Navigator.pop(context);
   }
