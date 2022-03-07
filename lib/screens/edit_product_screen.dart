@@ -82,11 +82,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
     }
   }
 
-  void _saveForm() {
-    // final isValidator = _form.currentState!.validate();
-    // if (isValidator) {
-    //   return;
-    // }
+  Future<void> _saveForm() async {
+    final isValidator = _form.currentState?.validate();
+    if (isValidator == null) {
+      return;
+    }
     _form.currentState?.save();
     setState(() {
       _isLoading = true;
@@ -96,14 +96,30 @@ class _EditProductScreenState extends State<EditProductScreen> {
     // Provider.of<Products>(context, listen: false)
     //     .updateProduct(_editedProduct.id.toString(), _editedProduct);
     //} //else {
-    Provider.of<Products>(context, listen: false)
-        .addProduct(_editedProduct)
-        .then((value) {
+    try {
+      await Provider.of<Products>(context, listen: false)
+          .addProduct(_editedProduct);
+    } catch (error) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                title: const Text(
+                    'SOME THING WENT WRONG. PLEASE TRY AFTER SOME TIMES'),
+                content: const Text('WROG'),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('OKAY'))
+                ],
+              ));
+    } finally {
       setState(() {
         _isLoading = false;
       });
       Navigator.pop(context);
-    });
+    }
   }
 
   @override

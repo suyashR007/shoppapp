@@ -54,19 +54,30 @@ class Products with ChangeNotifier {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> fetchAndSetProduct() async {
     final url = Uri.parse(
         'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json');
-    return http
-        .post(url,
-            body: json.encode({
-              'title': product.title,
-              'description': product.description,
-              'imageUrl': product.imageUrl,
-              'price': product.price,
-              'isfavorite': product.isFavorite,
-            }))
-        .then((response) {
+    try {
+      final response = await http.get(url);
+      print(response);
+      print('object');
+    } catch (error) {
+      throw (error);
+    }
+  }
+
+  Future<void> addProduct(Product product) async {
+    final url = Uri.parse(
+        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json');
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'title': product.title,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'isfavorite': product.isFavorite,
+          }));
       final newProduct = Product(
         id: jsonDecode(response.body)['name'],
         title: product.title,
@@ -76,7 +87,9 @@ class Products with ChangeNotifier {
       );
       _items.add(newProduct);
       notifyListeners();
-    });
+    } catch (error) {
+      rethrow;
+    }
   }
 
   void updateProduct(String id, Product newProduct) {

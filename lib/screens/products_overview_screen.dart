@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoppapp/providers/cart.dart';
+import 'package:shoppapp/providers/products_provider.dart';
 import 'package:shoppapp/screens/cart_screen.dart';
 import 'package:shoppapp/widgets/app_drawer.dart';
 import 'package:shoppapp/widgets/products_grid.dart';
@@ -20,6 +21,23 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   var _showOnlyFavorites = false;
+  var _isInit = true;
+  @override
+  void initState() {
+    // Future.delayed(Duration.zero).then((value) {
+    //   Provider.of<Products>(context).fetchAndSetProduct();
+    // }); this is a kind of approch
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      Provider.of<Products>(context).fetchAndSetProduct();
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +47,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           actions: [
             Consumer<Cart>(
               builder: (_, cart, ch) => Badge(
-                  child:  IconButton(
+                  child: IconButton(
                     onPressed: () {
                       Navigator.of(context).pushNamed(CartScreen.routeName);
                     },
@@ -61,7 +79,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                             'SHOW ALL',
                           ))
                     ]),
-
           ],
         ),
         drawer: const AppDrawer(),
