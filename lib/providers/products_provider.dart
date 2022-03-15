@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shoppapp/models/http_exception.dart';
 import 'package:shoppapp/providers/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -125,20 +126,22 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
         'https://shoppapp-ba408-default-rtdb.firebaseio.com/products/$id.json');
     var existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
-    http.delete(url).then((_)  {
-      //existingProduct = existingProduct
-    }).catchError((error) {
+    final response = await http.delete(url);
+    if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
-    });
+      throw HttpException('Could not able to delete the Product');
+      notifyListeners();
+    }
     _items.removeAt(existingProductIndex);
-   // _items.removeWhere((prod) => prod.id == id);
+    // _items.removeWhere((prod) => prod.id == id);
     notifyListeners();
   }
+
 // var _showFavoritesOnly = false;
 
 // void showFavoritesOnly() {

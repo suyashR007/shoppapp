@@ -17,6 +17,7 @@ class UserProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scaffold = ScaffoldMessenger.of(context);
     return Dismissible(
       confirmDismiss: (direction) {
         return showDialog(
@@ -97,9 +98,19 @@ class UserProductItem extends StatelessWidget {
                               },
                               child: const Text('NO')),
                           TextButton(
-                              onPressed: () {
-                                Provider.of<Products>(context, listen: false)
-                                    .deleteProduct(id);
+                              onPressed: () async {
+                                try {
+                                  await Provider.of<Products>(context,
+                                          listen: false)
+                                      .deleteProduct(id);
+                                } catch (error) {
+                                  scaffold.showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Product Couldn\'t be deleted'),
+                                    ),
+                                  );
+                                }
                                 Navigator.of(context).pop(true);
                               },
                               child: const Text('YES')),
