@@ -62,6 +62,11 @@ class Products with ChangeNotifier {
       final response = await http.get(url);
       final List<Product> loadedProduct = [];
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
+
+      // ignore: unnecessary_null_comparison
+      if (extractedData == null) {
+        return;
+      }
       extractedData.forEach((prodID, prodData) {
         loadedProduct.add(Product(
           id: prodID,
@@ -135,7 +140,6 @@ class Products with ChangeNotifier {
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
       throw HttpException('Could not able to delete the Product');
-      notifyListeners();
     }
     _items.removeAt(existingProductIndex);
     // _items.removeWhere((prod) => prod.id == id);

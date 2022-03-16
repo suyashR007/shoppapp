@@ -40,8 +40,10 @@ class ProductItem extends StatelessWidget {
             );
             //Scaffold.of(context).showSnackBar(snackbar);
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-              content: const  Text('ADDED ITEM TO CART',),
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: const Text(
+                'ADDED ITEM TO CART',
+              ),
               action: SnackBarAction(
                 label: 'UNDO',
                 onPressed: () {
