@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shoppapp/providers/cart.dart';
 import 'package:shoppapp/providers/order.dart';
 import 'package:shoppapp/providers/products_provider.dart';
+import 'package:shoppapp/screens/auth_screen.dart';
 import 'package:shoppapp/screens/cart_screen.dart';
 import 'package:shoppapp/screens/edit_product_screen.dart';
 import 'package:shoppapp/screens/order_screen.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
         ),
-        home: const ProductsOverviewScreen(),
+        home: const AuthScreen(),
         routes: {
           ProductDetails.routeName: (context) => const ProductDetails(),
           CartScreen.routeName: (context) => const CartScreen(),
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
           UserProductsScreen.routeName: (context) => const UserProductsScreen(),
           EditProductScreen.routeName: (context) => const EditProductScreen(),
           ReEditProduct.routeName: (context) => const ReEditProduct(),
+          AuthScreen.routeName: (context) => const AuthScreen(),
         },
       ),
     );
