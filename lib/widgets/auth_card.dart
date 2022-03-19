@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoppapp/providers/auth.dart';
 import 'package:shoppapp/screens/auth_screen.dart';
 
 class AuthCard extends StatefulWidget {
@@ -18,10 +20,10 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  void _submit() {
-    if (!_formkey.currentState!.validate()) {
-      return;
-    }
+  Future<void> _submit() async {
+    // if (!_formkey.currentState!.validate()) {
+    //   return;
+    // }
     _formkey.currentState?.save();
     setState(() {
       _isLoading = true;
@@ -30,6 +32,8 @@ class _AuthCardState extends State<AuthCard> {
       //log in user
     } else {
       //Sign up user
+      await Provider.of<Auth>(context, listen: false).signup(
+          _authData['email'].toString(), _authData['password'].toString());
     }
     setState(() {
       _isLoading = false;
