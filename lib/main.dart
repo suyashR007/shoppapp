@@ -21,28 +21,33 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => Auth()),
-        ChangeNotifierProvider(create: (context) => Products()),
-        ChangeNotifierProvider(create: (context) => Cart()),
-        ChangeNotifierProvider(create: (context) => Orders()),
-      ],
-      child: MaterialApp(
-        title: "Shopping_App",
-        theme: ThemeData(
-          primarySwatch: Colors.deepPurple,
-        ),
-        home: const AuthScreen(),
-        routes: {
-          ProductDetails.routeName: (context) => const ProductDetails(),
-          CartScreen.routeName: (context) => const CartScreen(),
-          OrderScreen.routeName: (context) => const OrderScreen(),
-          UserProductsScreen.routeName: (context) => const UserProductsScreen(),
-          EditProductScreen.routeName: (context) => const EditProductScreen(),
-          ReEditProduct.routeName: (context) => const ReEditProduct(),
-          AuthScreen.routeName: (context) => const AuthScreen(),
-        },
-      ),
-    );
+        providers: [
+          ChangeNotifierProvider(create: (context) => Auth()),
+          ChangeNotifierProvider(create: (context) => Products()),
+          ChangeNotifierProvider(create: (context) => Cart()),
+          ChangeNotifierProvider(create: (context) => Orders()),
+        ],
+        child: Consumer<Auth>(
+          builder: (context, auth, _) => MaterialApp(
+            title: "Shopping_App",
+            theme: ThemeData(
+              primarySwatch: Colors.deepPurple,
+            ),
+            home: auth.isAuth
+                ? const ProductsOverviewScreen()
+                : const AuthScreen(),
+            routes: {
+              ProductDetails.routeName: (context) => const ProductDetails(),
+              CartScreen.routeName: (context) => const CartScreen(),
+              OrderScreen.routeName: (context) => const OrderScreen(),
+              UserProductsScreen.routeName: (context) =>
+                  const UserProductsScreen(),
+              EditProductScreen.routeName: (context) =>
+                  const EditProductScreen(),
+              ReEditProduct.routeName: (context) => const ReEditProduct(),
+              AuthScreen.routeName: (context) => const AuthScreen(),
+            },
+          ),
+        ));
   }
 }
