@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shoppapp/providers/auth.dart';
 import 'package:shoppapp/providers/cart.dart';
 import 'package:shoppapp/providers/product.dart';
 import 'package:shoppapp/screens/product_detail.dart';
@@ -18,6 +19,7 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     return GridTile(
       child: GestureDetector(
         onTap: () {
@@ -58,7 +60,7 @@ class ProductItem extends StatelessWidget {
             icon: Icon(
                 product.isFavorite ? Icons.favorite : Icons.favorite_border),
             onPressed: () {
-              product.toggleFavoriteStatus();
+              product.toggleFavoriteStatus(authData.token.toString());
             },
           ),
         ),

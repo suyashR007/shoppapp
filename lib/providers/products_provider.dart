@@ -39,6 +39,8 @@ class Products with ChangeNotifier {
     //       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
     // ),
   ];
+  final String? authToken;
+  Products({this.authToken});
 
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
@@ -57,7 +59,7 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProduct() async {
     final url = Uri.parse(
-        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json');
+        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json?auth=$authToken');
     try {
       final response = await http.get(url);
       final List<Product> loadedProduct = [];
@@ -87,7 +89,7 @@ class Products with ChangeNotifier {
 
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json');
+        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json?auth=$authToken');
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -115,7 +117,7 @@ class Products with ChangeNotifier {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
     if (prodIndex >= 0) {
       final url = Uri.parse(
-          'https://shoppapp-ba408-default-rtdb.firebaseio.com/products/$id.json');
+          'https://shoppapp-ba408-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -133,7 +135,7 @@ class Products with ChangeNotifier {
 
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products/$id.json');
+        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products/$id.json?auth=$authToken');
     var existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
     final response = await http.delete(url);
