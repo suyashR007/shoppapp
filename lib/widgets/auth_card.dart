@@ -144,6 +144,7 @@ class _AuthCardState extends State<AuthCard> {
                         const InputDecoration(labelText: 'Confirm Password'),
                     obscureText: true,
                     validator: _authMode == AuthMode.signup
+                        // ignore: body_might_complete_normally_nullable
                         ? (value) {
                             if (value != _passwordController.text) {
                               return 'Passwords do not match';
