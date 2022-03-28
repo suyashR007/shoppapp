@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shoppapp/providers/auth.dart';
 import 'package:shoppapp/screens/cart_screen.dart';
 import 'package:shoppapp/screens/order_screen.dart';
 import 'package:shoppapp/screens/user_product_screen.dart';
+
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
 
@@ -25,7 +28,7 @@ class AppDrawer extends StatelessWidget {
           const Divider(),
           ListTile(
             leading: const Icon(Icons.shopping_cart_outlined),
-            title: const  Text('Cart'),
+            title: const Text('Cart'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(CartScreen.routeName);
             },
@@ -43,9 +46,19 @@ class AppDrawer extends StatelessWidget {
             leading: const Icon(Icons.edit),
             title: const Text('Manage Products'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed(UserProductsScreen.routeName);
+              Navigator.of(context)
+                  .pushReplacementNamed(UserProductsScreen.routeName);
             },
-          )
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('LOGLOUT'),
+            onTap: () {
+              Navigator.of(context).pop();
+              Provider.of<Auth>(context, listen: false).logout();
+            },
+          ),
         ],
       ),
     );
