@@ -40,7 +40,8 @@ class Products with ChangeNotifier {
     // ),
   ];
   final String? authToken;
-  Products({this.authToken});
+  final String? userId;
+  Products({this.authToken, this.userId});
 
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
@@ -57,9 +58,11 @@ class Products with ChangeNotifier {
     return _items.where((prodItem) => prodItem.isFavorite).toList();
   }
 
-  Future<void> fetchAndSetProduct() async {
+  Future<void> fetchAndSetProduct([bool fliterByUser = false]) async {
+    final filterString =
+        fliterByUser ? 'orderBy="creatorId"&equalTo="$userId' : '';
     final url = Uri.parse(
-        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json?auth=$authToken');
+        'https://shoppapp-ba408-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString"');
     try {
       final response = await http.get(url);
       final List<Product> loadedProduct = [];
@@ -69,6 +72,10 @@ class Products with ChangeNotifier {
       if (extractedData == null) {
         return;
       }
+      final urlfav = Uri.parse(
+          'https://shoppapp-ba408-default-rtdb.firebaseio.com/userfavorites/$userId.json?auth=$authToken');
+      final favoriteResponse = await http.get(urlfav);
+      final favData = json.decode(favoriteResponse.body);
       extractedData.forEach((prodID, prodData) {
         loadedProduct.add(Product(
           id: prodID,
@@ -76,6 +83,7 @@ class Products with ChangeNotifier {
           description: prodData['description'],
           price: prodData['price'],
           imageUrl: prodData['imageUrl'],
+          isFavorite: favData == null ? false : favData[prodID] ?? false,
           //isFavorite: prodData['isFavorite'],
         ));
       });
@@ -97,7 +105,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isfavorite': product.isFavorite,
+            'creatorID': userId,
           }));
       final newProduct = Product(
         id: jsonDecode(response.body)['name'],
