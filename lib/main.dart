@@ -11,6 +11,7 @@ import 'package:shoppapp/screens/order_screen.dart';
 import 'package:shoppapp/screens/product_detail.dart';
 import 'package:shoppapp/screens/products_overview_screen.dart';
 import 'package:shoppapp/screens/reedit_product.dart';
+import 'package:shoppapp/screens/splash_screen.dart';
 import 'package:shoppapp/screens/user_product_screen.dart';
 
 void main() => runApp(const MyApp());
@@ -41,7 +42,13 @@ class MyApp extends StatelessWidget {
             ),
             home: auth.isAuth
                 ? const ProductsOverviewScreen()
-                : const AuthScreen(),
+                : FutureBuilder(
+                    future: auth.tryAutoLogin(),
+                    builder: (context, authResultSnapShot) =>
+                        authResultSnapShot.connectionState ==
+                                ConnectionState.waiting
+                            ? SplashScreen()
+                            : const AuthScreen()),
             routes: {
               ProductDetails.routeName: (context) => const ProductDetails(),
               CartScreen.routeName: (context) => const CartScreen(),
