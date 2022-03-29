@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shoppapp/providers/cart.dart';
 import 'package:shoppapp/providers/order.dart';
+import 'package:shoppapp/widgets/app_drawer.dart';
 import 'package:shoppapp/widgets/cart_item.dart';
 
 class CartScreen extends StatefulWidget {
@@ -20,6 +21,7 @@ class _CartScreenState extends State<CartScreen> {
       appBar: AppBar(
         title: const Text('CART'),
       ),
+      drawer: const AppDrawer(),
       body: Column(
         children: [
           Card(
