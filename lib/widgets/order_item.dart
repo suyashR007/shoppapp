@@ -21,31 +21,37 @@ class _OrdertileState extends State<Ordertile> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(4),
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(widget.order.amount.toString()),
-            subtitle: Text(
-              DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 100),
+      height:
+          _expended ? min(widget.order.product.length * 20.0 + 120, 200) : 100,
+      child: Card(
+        margin: const EdgeInsets.all(4),
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(widget.order.amount.toString()),
+              subtitle: Text(
+                DateFormat('dd/MM/yyyy hh:mm').format(widget.order.dateTime),
+              ),
+              trailing: IconButton(
+                icon: Icon(_expended ? Icons.expand_less : Icons.expand_more),
+                onPressed: () {
+                  setState(() {
+                    _expended = !_expended;
+                  });
+                },
+              ),
             ),
-            trailing: IconButton(
-              icon: Icon(_expended ? Icons.expand_less : Icons.expand_more),
-              onPressed: () {
-                setState(() {
-                  _expended = !_expended;
-                });
-              },
-            ),
-          ),
-          if (_expended == true)
-            Container(
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 100),
               padding: const EdgeInsets.symmetric(
                 horizontal: 3,
                 vertical: 4,
               ),
-              height: min(widget.order.product.length * 20.0 + 20, 100),
+              height: _expended
+                  ? min(widget.order.product.length * 20.0 + 20, 100)
+                  : 0,
               child: ListView(
                   children: widget.order.product
                       .map((prod) => Row(
@@ -60,7 +66,7 @@ class _OrdertileState extends State<Ordertile> {
                               ),
                               Text(
                                 '${prod.quantity}x${prod.price}',
-                                style: const  TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey,
                                 ),
@@ -69,7 +75,8 @@ class _OrdertileState extends State<Ordertile> {
                           ))
                       .toList()),
             ),
-        ],
+          ],
+        ),
       ),
     );
   }

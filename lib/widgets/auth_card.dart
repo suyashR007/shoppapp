@@ -11,7 +11,8 @@ class AuthCard extends StatefulWidget {
   State<AuthCard> createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard> {
+class _AuthCardState extends State<AuthCard>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _formkey = GlobalKey();
   AuthMode _authMode = AuthMode.login;
   final Map<String, String> _authData = {
@@ -20,6 +21,12 @@ class _AuthCardState extends State<AuthCard> {
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 100),
+  );
+  late final Animation<double> _opacityAnimation = Tween(begin: 0.0, end: 1.0)
+      .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
 
   void _showErrorDialog(String message) {
     showDialog(
@@ -84,10 +91,12 @@ class _AuthCardState extends State<AuthCard> {
       setState(() {
         _authMode = AuthMode.signup;
       });
+      _controller.forward();
     } else {
       setState(() {
         _authMode = AuthMode.login;
       });
+      _controller.reverse();
     }
   }
 
@@ -100,7 +109,9 @@ class _AuthCardState extends State<AuthCard> {
         borderRadius: BorderRadius.circular(10),
       ),
       elevation: 8.0,
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 100),
+        curve: Curves.easeIn,
         height: _authMode == AuthMode.signup ? 320 : 260,
         constraints: BoxConstraints(
           minHeight: _authMode == AuthMode.signup ? 320 : 260,
@@ -119,6 +130,7 @@ class _AuthCardState extends State<AuthCard> {
                     if (value == null || !value.contains('@')) {
                       return 'Invalid Email';
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     _authData['email'] = value.toString();
@@ -132,25 +144,29 @@ class _AuthCardState extends State<AuthCard> {
                     if (value == null || value.length < 5) {
                       return 'Password Invalid';
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     _authData['password'] = value.toString();
                   },
                 ),
                 if (_authMode == AuthMode.signup)
-                  TextFormField(
-                    enabled: _authMode == AuthMode.signup,
-                    decoration:
-                        const InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                    validator: _authMode == AuthMode.signup
-                        // ignore: body_might_complete_normally_nullable
-                        ? (value) {
-                            if (value != _passwordController.text) {
-                              return 'Passwords do not match';
+                  FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: TextFormField(
+                      enabled: _authMode == AuthMode.signup,
+                      decoration:
+                          const InputDecoration(labelText: 'Confirm Password'),
+                      obscureText: true,
+                      validator: _authMode == AuthMode.signup
+                          // ignore: body_might_complete_normally_nullable
+                          ? (value) {
+                              if (value != _passwordController.text) {
+                                return 'Passwords do not match';
+                              }
                             }
-                          }
-                        : null,
+                          : null,
+                    ),
                   ),
                 const SizedBox(
                   height: 20,

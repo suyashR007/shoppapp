@@ -14,41 +14,50 @@ class ProductDetails extends StatelessWidget {
     final loadedProduct =
         Provider.of<Products>(context, listen: false).findById(productid);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(loadedProduct.title),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              child: Image.network(
-                loadedProduct.imageUrl,
-                fit: BoxFit.cover,
+      // appBar: AppBar(
+      //   title: Text(loadedProduct.title),
+      // ),
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            // SliverAppBar(),
+            SliverList(
+                delegate: SliverChildListDelegate([
+              SizedBox(
+                child: Hero(
+                  tag: loadedProduct.id,
+                  child: Image.network(
+                    loadedProduct.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                height: 500,
+                width: double.infinity,
               ),
-              height: 500,
-              width: double.infinity,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              loadedProduct.title,
-              style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.w800,
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            const SizedBox(height: 10,),
-            Text(
-              'RS:${loadedProduct.price}',
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+              Text(
+                loadedProduct.title,
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-
+              const SizedBox(
+                height: 10,
+              ),
+              Text(
+                'RS:${loadedProduct.price}',
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ]))
           ],
         ),
       ),
