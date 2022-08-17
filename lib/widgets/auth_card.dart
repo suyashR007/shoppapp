@@ -177,9 +177,9 @@ class _AuthCardState extends State<AuthCard>
                   ElevatedButton(
                     onPressed: _submit,
                     style: ElevatedButton.styleFrom(
-                        shape: const BeveledRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10)))),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                    ),
                     child:
                         Text(_authMode == AuthMode.login ? 'LOGIN' : 'SIGHUP'),
                   ),
