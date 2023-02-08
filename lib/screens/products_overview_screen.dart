@@ -55,15 +55,16 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           title: const Text('My Shop'),
           actions: [
             Consumer<Cart>(
-              builder: (_, cart, ch) => Badge(
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(CartScreen.routeName);
-                    },
-                    icon: const Icon(Icons.shopping_cart),
-                  ),
-                  color: Colors.deepPurple,
-                  value: cart.itemCount.toString()),
+              builder: (_, cart, ch) => Badges(
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(CartScreen.routeName);
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                ),
+                color: Colors.deepPurple,
+                value: cart.itemCount.toString(),
+              ),
             ),
             PopupMenuButton(
                 onSelected: (fliterOptions selectedValue) {
